@@ -1,13 +1,38 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+// import TheWelcome from './components/TheWelcome.vue'
 import Form from './components/Form.vue'
 </script>
 
 <template>
-  
   <Form />
+  <form @submit.prevent="submitForm">
+    <input v-model="email" placeholder="Enter your email" />
+    <span v-if="!isEmailValid">Invalid email</span>
+    <button type="submit">Submit</button>
+  </form>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      email: '',
+    };
+  },
+  computed: {
+    isEmailValid() {
+      return /^\S+@\S+\.\S+$/.test(this.email);
+    },
+  },
+  methods: {
+    submitForm() {
+      if (this.isEmailValid) {
+      }
+    },
+  },
+};
+</script>
 
 <style scoped>
 header {
