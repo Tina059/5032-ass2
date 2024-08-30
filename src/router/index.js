@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
 import LoginPage from '../views/LoginPage.vue'
+import RegisterPage from '../views/RegisterPage.vue'
 import {useChange} from '../router/change'
 const {isChange } = useChange();
 const routes = [
@@ -19,7 +20,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: LoginPage
-  }
+  },
+  { 
+    path: '/register', 
+    name: 'Register', 
+    component: RegisterPage },
 ]
 
 const router = createRouter({

@@ -9,307 +9,125 @@ import { useRouter } from 'vue-router';
 //import About from '../views/AboutView.vue'
 //import {useChange} from '../router/change'
 
+
 const formData = ref({
   username: '',
   password: '',
-  confirmPassword: '',
-  reason: '',
-  gender: '',
-  email:''
- 
-})
-//const {isChange } = useChange()
-const { login } = useChange();
+});
+
+const message = ref('');
 const router = useRouter();
-
-const submittedCards = ref([])
-
-const submitForm = () => {
-  validateName(true)
-  validatePassword(true)
-  validateConfirmPassword(true)
-  validateReason(true)
-  validateEmail(true)
-  if (!errors.value.username 
-  && !errors.value.password 
-  && !errors.value.confirmPassword
-  && !errors.value.reason 
-  && !errors.value.email) 
-  {
-    //submittedCards.value.push({ ...formData.value })
-    //clearForm()
-    alert("Successful  !")
-    //isChange.value = true
-
-    login();  
-
-    router.push({ name: 'About' })
-      .then(() => console.log("Navigation successful"))
-      .catch((error) => console.error("Navigation error", error));
-  
-}
-
-}
-
-const clearForm = () => {
-  formData.value = {
-    username: '',
-    password: '',
-    isAustralian: false,
-    reason: '',
-    gender: '',
-  }
-}
-
-const errors = ref({
-  username: null,
-  password: null,
-  confirmPassword: null,
-  gender: null,
-  email: null,
-  reason: null
-})
-
-const validateName = (blur) => {
-  if (formData.value.username.length < 3) {
-    if (blur) errors.value.username = 'Name must be at least 3 characters'
-  } else {
-    errors.value.username = null
-  }
-}
-const validateConfirmPassword = (blur) => {
-  if (formData.value.password !== formData.value.confirmPassword) {
-    if (blur) errors.value.confirmPassword = 'Passwords do not match.'
-  } else {
-    errors.value.confirmPassword = null
-  }
-}
-
-const validateReason = (blur) => {
-  if (formData.value.reason.length < 10) {
-    if (blur) errors.value.reason = 'Reason must be at least 10 characters'
-  } else {
-    errors.value.reason = null
-  }
-}
-const checkReason = (blur) => {
-  if (formData.value.reason.includes('friend')) {
-    haveFriend.value = true;
-    haveFriend.value.reason='Great to have friend'
-  } else {
-    haveFriend.value = false;
-  }
-}
-const haveFriend = ref(false)
-
+const { login } = useChange();
 
 const validatePassword = (blur) => {
-  const password = formData.value.password
-  const minLength = 8
-  const hasUppercase = /[A-Z]/.test(password)
-  const hasLowercase = /[a-z]/.test(password)
-  const hasNumber = /\d/.test(password)
-  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+  const password = formData.value.password;
+  const minLength = 8;
+  const hasUppercase = /[A-Z]/.test(password);
+  const hasLowercase = /[a-z]/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
   if (password.length < minLength) {
-    if (blur) errors.value.password = 'Password must be at least ${minLength} characters long.'
+    if (blur) message.value = `Password must be at least ${minLength} characters long.`;
   } else if (!hasUppercase) {
-    if (blur) errors.value.password = 'Password must contain at least one uppercase letter.'
+    if (blur) message.value = 'Password must contain at least one uppercase letter.';
   } else if (!hasLowercase) {
-    if (blur) errors.value.password = 'Password must contain at least one lowercase letter.'
-  } else if (!hasNumber) {
-    if (blur) errors.value.password = 'Password must contain at least one number.'
+    if (blur) message.value = 'Password must contain at least one lowercase letter.';
   } else if (!hasSpecialChar) {
-    if (blur) errors.value.password = 'Password must contain at least one special character.'
+    if (blur) message.value = 'Password must contain at least one special character.';
   } else {
-    errors.value.password = null
+    message.value = '';
   }
-}
-const validateEmail = (blur) => {
-  const email = formData.value.email
-  const minLength = 4;
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+};
 
-  if (email.length < minLength) {
-    if (blur) errors.value.email = 'Email must be at least ${minLength} characters long.';
-  } else if (!emailPattern.test(email)) {
-    if (blur) errors.value.email = 'Invalid email format. Please use a correct email format, such as example@example.com';
+const submitForm = () => {
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+
+  const user = users.find(u => u.username === formData.value.username && u.password === formData.value.password);
+
+  if (user) {
+
+    if (user.role === 'admin') {
+      router.push({ name: 'AdminDashboard' }); 
+    } else {
+      login(); 
+      router.push({ name: 'About' })
+        .then(() => console.log("Navigation successful"))
+        .catch((error) => console.error("Navigation error", error)); 
+    }
   } else {
-    errors.value.email = null;
+    message.value = 'Invalid username or password';
   }
-}
+};
+
+const goToRegisterPage = () => {
+  router.push({ name: 'Register' }); 
+};
 </script>
 
 <template>
-  <!-- 🗄️ W5. Library Registration -->
   <div class="container mt-5">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <h1 class="text-center"> Please log in</h1>
-        <p class="text-center">
-          
-        </p>
-        <form @submit.prevent="submitForm">
-          <div class="row mb-3">
-            <div class="col-md-6 col-sm-6">
-              <label for="username" class="form-label">Username</label>
-              <input
-                type="text"
-                class="form-control"
-                id="username"
-                @blur="() => validateName(true)"
-                @input="() => validateName(false)"
-                v-model="formData.username"
-              />
-              <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <label for="gender" class="form-label">Gender</label>
-              <select class="form-select" id="gender" v-model="formData.gender" required>
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-              <div v-if="errors.gender" class="text-danger">{{ errors.gender }}</div>
-            </div>   
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-12 col-sm-12">
-              <label for="password" class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                @blur="() => validatePassword(true)"
-                @input="() => validatePassword(true)"
-                v-model="formData.password"
-              />
-              <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-12 col-sm-12">
-              <label for="confirm-password" class="form-label">Confirm password</label>
-              <input
-                  type="password"
-                  class="form-control"
-                  id="confirm-password"
-                  v-model="formData.confirmPassword"
-                  @blur="() => validateConfirmPassword(true)"
-                  @input="() => validateConfirmPassword(true)"
-              />
-              <div v-if="errors.confirmPassword" class="text-danger">{{ errors.confirmPassword }}</div>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <div class="col-md-12 col-sm-12">
-              <label for="email" class="form-label">Email</label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                @blur="() => validateEmail(true)"
-                @input="() => validateEmail(true)"
-                v-model="formData.email"
-              />
-              <div v-if="errors.email" class="text-danger">{{ errors.email }}</div>
-            </div>
-          </div>
-        
-
-          <div class="mb-3">
-            <label for="reason" class="form-label">Reason for joining</label>
-            <textarea
-              class="form-control"
-              id="reason"
-              rows="3"
-              v-model="formData.reason"
-              @blur="() => validateReason(true)"
-              @input="() => {validateReason(false); checkReason(true)}"
-              
-            ></textarea>
-            <div v-if="errors.reason" class="text-danger">{{ errors.reason }}</div>
-            <div v-if="checkReason.value=true" style="color: aqua;"></div>
-          </div>
-
-          <div class="text-center">
-            <button type="submit" class="btn btn-primary me-2">Submit</button>
-            <button type="button" class="btn btn-secondary" @click="clearForm">Clear</button>
-          </div>
-        </form>
+    <h1 class="text-center">Login</h1>
+    <form @submit.prevent="submitForm" class="mt-4">
+      <!-- Username -->
+      <div class="row mb-3">
+        <div class="col-md-12 col-sm-12">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            v-model="formData.username"
+            required
+          />
+        </div>
       </div>
-    </div>
-  </div>
 
-  <div class="row mt-5">
-    <h4>This is a Primevue Datatable.</h4>
-    <DataTable :value="submittedCards" tableStyle="min-width: 50rem">
-      <Column field="username" header="Username"></Column>
-      <Column field="password" header="Password"></Column>
-      <Column field="isAustralian" header="Australian Resident"></Column>
-      <Column field="gender" header="Gender"></Column>
-      <Column field="reason" header="Reason"></Column>
-    </DataTable>
-  </div>
-
-  <div class="row mt-5" v-if="submittedCards.length">
-    <div class="d-flex flex-wrap justify-content-start">
-      <div
-        v-for="(card, index) in submittedCards"
-        :key="index"
-        class="card m-2"
-        style="width: 18rem"
-      >
-        <div class="card-header">User Information</div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Username: {{ card.username }}</li>
-          <li class="list-group-item">Password: {{ card.password }}</li>
-          <li class="list-group-item">
-            Australian Resident: {{ card.isAustralian ? 'Yes' : 'No' }}
-          </li>
-          <li class="list-group-item">Gender: {{ card.gender }}</li>
-          <li class="list-group-item">Reason: {{ card.reason }}</li>
-        </ul>
+      <!-- Password -->
+      <div class="row mb-3">
+        <div class="col-md-12 col-sm-12">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            @blur="() => validatePassword(true)"
+            @input="() => validatePassword(true)"
+            v-model="formData.password"
+            required
+          />
+          <div v-if="message" class="text-danger">{{ message }}</div>
+        </div>
       </div>
+
+      <!-- Submit Button -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+    </form>
+
+    <!-- Register Button -->
+    <div class="text-center mt-4">
+      <p>Don't have an account? <button @click="goToRegisterPage" class="btn btn-link">Register here</button></p>
     </div>
+
+    <!-- Message -->
+    <p v-if="message" class="text-center mt-4">{{ message }}</p>
   </div>
 </template>
 
 <style scoped>
-.container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 80vw;
-  margin: 0 auto;
-  padding: 20px;
-  /* background-color: #e0bfbf; */
-  border-radius: 10px;
+
+.btn-link {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-/* Class selectors */
-.form {
-  text-align: center;
-  margin-top: 50px;
-}
-
-/* ID selectors */
-#username:focus,
-#password:focus,
-#isAustralian:focus,
-.card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.card-header {
-  background-color: #275fda;
-  color: white;
-  padding: 10px;
-  border-radius: 10px 10px 0 0;
-}
-.list-group-item {
-  padding: 10px;
+.btn-link:hover {
+  color: #0056b3;
+  text-decoration: none;
 }
 </style>
