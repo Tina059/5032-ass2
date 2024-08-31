@@ -121,13 +121,13 @@ const goToRegisterPage = () => {
   padding: 0;
   border: none;
   background: none;
-  color: #007bff;
+  color: #3550b1;
   text-decoration: underline;
   cursor: pointer;
 }
 
 .btn-link:hover {
-  color: #0056b3;
+  color: #1f277d;
   text-decoration: none;
 }
 </style>

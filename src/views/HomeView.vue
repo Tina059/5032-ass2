@@ -1,8 +1,6 @@
 <template>
   <div class="home-container">
-    <div class="logo-container">
-      <img src="@/assets/logo.png" alt="Logo" class="logo" />
-    </div>
+    
     
     <div class="welcome-container">
       <img src="@/assets/home-background.jpg" alt="Welcome Background" class="background-img" />
@@ -10,6 +8,10 @@
         <h1>Welcome to your Health Care</h1>
         <p>Start your health exploration</p>
       </div>
+    </div>
+
+    <div class="image-container">
+      <img src="@/assets/home-background.jpg" alt="Background Image" class="background-img" />
     </div>
 
     <div class="news-container">
@@ -62,15 +64,17 @@ news.value = newsData;
   margin: 0 auto;
 }
 
+
 .background-img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
+  width: 1200px;  
+  height: 200px;  
+  border-radius: 10px; 
 }
+
 
 .welcome-text {
   position: absolute;
-  top: 40%; /* 调整 welcome 文本的垂直位置 */
+  top: 40%; 
   left: 50%;
   transform: translate(-50%, -50%);
   color: rgb(28, 81, 5);
@@ -88,11 +92,11 @@ news.value = newsData;
 }
 
 .news-container {
-  margin-top: -10px; /* 将新闻部分往上移动 */
+  margin-top: -10px; 
   padding: 20px;
-  background: rgba(67, 197, 200, 0.9); /* 添加背景色以突出新闻内容 */
-  border-radius: 8px; /* 圆角 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影 */
+  background: rgba(67, 197, 200, 0.9);
+  border-radius: 8px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 800px;
   text-align: left;
