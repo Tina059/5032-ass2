@@ -4,6 +4,8 @@ import AboutView from '../views/AboutView.vue'
 import LoginPage from '../views/LoginPage.vue'
 import RegisterPage from '../views/RegisterPage.vue'
 import {useChange} from '../router/change'
+import AdminDashboard from '../views/AdminDashboard.vue';
+
 const {isChange } = useChange();
 const routes = [
   {
@@ -24,7 +26,15 @@ const routes = [
   { 
     path: '/register', 
     name: 'Register', 
-    component: RegisterPage },
+    component: RegisterPage 
+  },
+  {
+    path: '/admin-dashboard',
+    name: 'AdminDashboard',
+    component: AdminDashboard, 
+  },
+  
+
 ]
 
 const router = createRouter({

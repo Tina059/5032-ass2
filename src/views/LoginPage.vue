@@ -1,18 +1,12 @@
 <script setup>
-import { ref } from 'vue'
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import { routerKey } from 'vue-router';
-//import router from '../router'
-import { useChange } from '../router/change'
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-//import About from '../views/AboutView.vue'
-//import {useChange} from '../router/change'
-
+import { useChange } from '../router/change';
 
 const formData = ref({
   username: '',
   password: '',
+  role: 'user', 
 });
 
 const message = ref('');
@@ -45,15 +39,8 @@ const submitForm = () => {
   const user = users.find(u => u.username === formData.value.username && u.password === formData.value.password);
 
   if (user) {
-
-    if (user.role === 'admin') {
-      router.push({ name: 'AdminDashboard' }); 
-    } else {
-      login(); 
-      router.push({ name: 'About' })
-        .then(() => console.log("Navigation successful"))
-        .catch((error) => console.error("Navigation error", error)); 
-    }
+    login(user.role);  // 登录成功时传递角色
+    router.push({ name: 'About' });
   } else {
     message.value = 'Invalid username or password';
   }
@@ -116,7 +103,6 @@ const goToRegisterPage = () => {
 </template>
 
 <style scoped>
-
 .btn-link {
   padding: 0;
   border: none;
