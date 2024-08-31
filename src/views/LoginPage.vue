@@ -15,7 +15,14 @@ const { login } = useChange();
 
 const sanitizeInput = (input) => {
   // Detect XSS
-  return input.replace(/<[^>]*>?/gm, '');
+  const tagPattern = /<[^>]*>?/gm;
+  if (tagPattern.test(input)) {
+    warningMessage.value = "Your input contains invalid characters or scripts and has been rejected.";
+    return input.replace(tagPattern, ''); 
+  } else {
+    warningMessage.value = ''; 
+    return input;
+  }
 };
 
 const validatePassword = (blur) => {
@@ -44,6 +51,9 @@ const submitForm = () => {
   const sanitizedUsername = sanitizeInput(formData.value.username);
   const sanitizedPassword = sanitizeInput(formData.value.password);
 
+  if (warningMessage.value) {
+    return;
+  }
   const user = users.find(u => u.username === sanitizedUsername && u.password === sanitizedPassword);
 
   if (user) {
@@ -92,6 +102,10 @@ const goToRegisterPage = () => {
           />
           <div v-if="message" class="text-danger">{{ message }}</div>
         </div>
+      </div>
+
+      <div v-if="warningMessage" class="alert alert-warning">
+        {{ warningMessage }}
       </div>
 
       <!-- Submit Button -->
