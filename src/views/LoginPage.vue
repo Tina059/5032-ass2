@@ -13,6 +13,11 @@ const message = ref('');
 const router = useRouter();
 const { login } = useChange();
 
+const sanitizeInput = (input) => {
+  // Detect XSS
+  return input.replace(/<[^>]*>?/gm, '');
+};
+
 const validatePassword = (blur) => {
   const password = formData.value.password;
   const minLength = 8;
@@ -36,10 +41,13 @@ const validatePassword = (blur) => {
 const submitForm = () => {
   const users = JSON.parse(localStorage.getItem('users')) || [];
 
-  const user = users.find(u => u.username === formData.value.username && u.password === formData.value.password);
+  const sanitizedUsername = sanitizeInput(formData.value.username);
+  const sanitizedPassword = sanitizeInput(formData.value.password);
+
+  const user = users.find(u => u.username === sanitizedUsername && u.password === sanitizedPassword);
 
   if (user) {
-    login(user.role);  // 登录成功时传递角色
+    login(user.role);  
     router.push({ name: 'About' });
   } else {
     message.value = 'Invalid username or password';

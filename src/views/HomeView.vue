@@ -24,6 +24,18 @@
       </ul>
     </div>
   </div>
+  <footer class="footer">
+      <div class="contact-info">
+        <h3>24 hour health advice you can count on</h3>
+        <p>📞 1800 000 000</p>
+      </div>
+      <div class="social-media">
+        <img src="@/assets/facebook-icon.png" alt="Facebook" class="social-icon" />
+        <img src="@/assets/twitter-icon.png" alt="Twitter" class="social-icon" />
+        <img src="@/assets/instagram-icon.png" alt="Instagram" class="social-icon" />
+      </div>
+      
+    </footer>
 </template>
 
 <script setup>
@@ -124,5 +136,48 @@ news.value = newsData;
 .news-item p {
   margin-bottom: 0;
   color: #555;
+}
+.footer {
+  background-color: #bcdcaa;
+  padding: 20px;
+  text-align: center;
+  margin-top: 40px;
+  border-top: 1px solid #ccc;
+}
+
+.contact-info h3 {
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+}
+
+.contact-info p {
+  font-size: 1.2rem;
+  margin: 5px 0;
+}
+
+.social-media {
+  margin: 20px 0;
+}
+
+.social-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 10px;
+}
+
+.partners {
+  margin-top: 20px;
+}
+
+.partner-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.partner-logo {
+  width: 80px;
+  height: auto;
 }
 </style>
