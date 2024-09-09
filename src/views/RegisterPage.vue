@@ -86,7 +86,7 @@ const submitForm = () => {
   <div class="container mt-5">
     <h1 class="text-center">Register</h1>
     <form @submit.prevent="submitForm" class="mt-4">
-      <!-- Username -->
+ 
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="username" class="form-label">Username</label>
@@ -101,7 +101,7 @@ const submitForm = () => {
         </div>
       </div>
 
-      <!-- Email -->
+
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="email" class="form-label">Email</label>
@@ -118,7 +118,7 @@ const submitForm = () => {
         </div>
       </div>
 
-      <!-- Password -->
+
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="password" class="form-label">Password</label>
@@ -135,7 +135,7 @@ const submitForm = () => {
         </div>
       </div>
 
-      <!-- Confirm Password -->
+
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="confirm-password" class="form-label">Confirm Password</label>
@@ -152,7 +152,7 @@ const submitForm = () => {
         </div>
       </div>
 
-      <!-- Role -->
+
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="role" class="form-label">Role</label>
@@ -163,13 +163,13 @@ const submitForm = () => {
         </div>
       </div>
 
-      <!-- Submit Button -->
+
       <div class="text-center">
         <button type="submit" class="btn btn-primary">Register</button>
       </div>
     </form>
 
-    <!-- Message -->
+
     <p v-if="message" class="text-center mt-4">{{ message }}</p>
   </div>
 </template>

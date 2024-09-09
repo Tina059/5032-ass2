@@ -37,7 +37,7 @@ const addActivity = () => {
     const newActivity = { title: newActivityTitle.value };
     activities.value.push(newActivity);
     saveActivities();
-    newActivityTitle.value = ''; // 清空输入框
+    newActivityTitle.value = ''; 
   }
 };
 

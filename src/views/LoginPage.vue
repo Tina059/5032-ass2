@@ -10,11 +10,12 @@ const formData = ref({
 });
 
 const message = ref('');
+const warningMessage = ref(''); 
 const router = useRouter();
 const { login } = useChange();
 
 const sanitizeInput = (input) => {
-  // Detect XSS
+  
   const tagPattern = /<[^>]*>?/gm;
   if (tagPattern.test(input)) {
     warningMessage.value = "Your input contains invalid characters or scripts and has been rejected.";
@@ -26,7 +27,7 @@ const sanitizeInput = (input) => {
 };
 
 const validatePassword = (blur) => {
-  const password = formData.value.password;
+  const password = sanitizeInput(formData.value.password);
   const minLength = 8;
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
@@ -54,6 +55,7 @@ const submitForm = () => {
   if (warningMessage.value) {
     return;
   }
+  
   const user = users.find(u => u.username === sanitizedUsername && u.password === sanitizedPassword);
 
   if (user) {
