@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Firebase Auth
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
+import db from '../firebase/init';  // 引入已初始化的 Firestore 实例
 
 const formData = ref({
   username: '',
@@ -61,22 +63,30 @@ const validateEmail = (blur) => {
   }
 };
 
-const submitForm = () => {
-  // 使用 Firebase Auth 进行注册
+// Firestore 和 Firebase 注册功能
+const submitForm = async () => {
   const auth = getAuth();
-  createUserWithEmailAndPassword(auth, formData.value.email, formData.value.password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      // 注册成功后，你可以将角色保存到数据库或本地存储中
-      message.value = 'Registration successful!';
-      formData.value = { username: '', password: '', confirmPassword: '', email: '', role: 'user' };
-      console.log("Registered user:", user);
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      message.value = `Error: ${errorMessage}`;
+  
+  try {
+    // 注册用户
+    const userCredential = await createUserWithEmailAndPassword(auth, formData.value.email, formData.value.password);
+    const user = userCredential.user;
+
+    // 将用户数据添加到 Firestore 的 'users' 集合中
+    await addDoc(collection(db, 'users'), {
+      uid: user.uid,
+      username: formData.value.username,
+      email: formData.value.email,
+      role: formData.value.role
     });
+
+    message.value = 'Registration successful!';
+    formData.value = { username: '', password: '', confirmPassword: '', email: '', role: 'user' };
+    console.log('Registered user:', user);
+  } catch (error) {
+    const errorMessage = error.message;
+    message.value = `Error: ${errorMessage}`;
+  }
 };
 </script>
 
