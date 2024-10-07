@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Firebase Auth
 
 const formData = ref({
   username: '',
@@ -61,24 +62,21 @@ const validateEmail = (blur) => {
 };
 
 const submitForm = () => {
-  const users = JSON.parse(localStorage.getItem('users')) || [];
-
-  const existingUser = users.find(user => user.username === formData.value.username);
-  if (existingUser) {
-    message.value = 'Username already exists!';
-    return;
-  }
-
-  const newUser = {
-    id: users.length + 1,
-    ...formData.value,
-  };
-  users.push(newUser);
-
-  localStorage.setItem('users', JSON.stringify(users));
-
-  message.value = 'Registration successful!';
-  formData.value = { username: '', password: '', confirmPassword: '', email: '', role: 'user' };
+  // 使用 Firebase Auth 进行注册
+  const auth = getAuth();
+  createUserWithEmailAndPassword(auth, formData.value.email, formData.value.password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      // 注册成功后，你可以将角色保存到数据库或本地存储中
+      message.value = 'Registration successful!';
+      formData.value = { username: '', password: '', confirmPassword: '', email: '', role: 'user' };
+      console.log("Registered user:", user);
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      message.value = `Error: ${errorMessage}`;
+    });
 };
 </script>
 
@@ -86,7 +84,7 @@ const submitForm = () => {
   <div class="container mt-5">
     <h1 class="text-center">Register</h1>
     <form @submit.prevent="submitForm" class="mt-4">
- 
+      <!-- Username -->
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="username" class="form-label">Username</label>
@@ -101,7 +99,7 @@ const submitForm = () => {
         </div>
       </div>
 
-
+      <!-- Email -->
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="email" class="form-label">Email</label>
@@ -118,7 +116,7 @@ const submitForm = () => {
         </div>
       </div>
 
-
+      <!-- Password -->
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="password" class="form-label">Password</label>
@@ -135,7 +133,7 @@ const submitForm = () => {
         </div>
       </div>
 
-
+      <!-- Confirm Password -->
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="confirm-password" class="form-label">Confirm Password</label>
@@ -152,7 +150,7 @@ const submitForm = () => {
         </div>
       </div>
 
-
+      <!-- Role -->
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="role" class="form-label">Role</label>
@@ -163,13 +161,13 @@ const submitForm = () => {
         </div>
       </div>
 
-
+      <!-- Submit Button -->
       <div class="text-center">
         <button type="submit" class="btn btn-primary">Register</button>
       </div>
     </form>
 
-
+    <!-- Message -->
     <p v-if="message" class="text-center mt-4">{{ message }}</p>
   </div>
 </template>
@@ -180,32 +178,6 @@ const submitForm = () => {
   max-width: 80vw;
   margin: 0 auto;
   padding: 20px;
-  /* background-color: #e0bfbf; */
   border-radius: 10px;
-}
-
-/* Class selectors */
-.form {
-  text-align: center;
-  margin-top: 50px;
-}
-
-/* ID selectors */
-#username:focus,
-#password:focus,
-#isAustralian:focus,
-.card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.card-header {
-  background-color: #16773e;
-  color: white;
-  padding: 10px;
-  border-radius: 10px 10px 0 0;
-}
-.list-group-item {
-  padding: 10px;
 }
 </style>

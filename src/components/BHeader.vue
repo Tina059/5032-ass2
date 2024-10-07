@@ -15,7 +15,7 @@
           <router-link to="/about" class="nav-link" active-class="active">About Activity</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+          <router-link to="/login" class="nav-link" active-class="active"> Firebase Login</router-link>
         </li>
         <li class="nav-item">
           <button class="nav-link btn-logout" @click="logout">Logout</button>

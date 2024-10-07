@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import AboutView from '../views/AboutView.vue'
-import LoginPage from '../views/LoginPage.vue'
-import RegisterPage from '../views/RegisterPage.vue'
+import FirebaseLoginPage from '../views/FirebaseLoginPage.vue'
+import FirebaseRegisterPage from '../views/FirebaseRegisterPage.vue'
 import {useChange} from '../router/change'
 import AdminDashboard from '../views/AdminDashboard.vue';
 
@@ -21,12 +21,12 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: LoginPage
+    component: FirebaseLoginPage
   },
   { 
     path: '/register', 
     name: 'Register', 
-    component: RegisterPage 
+    component: FirebaseRegisterPage 
   },
   {
     path: '/admin-dashboard',
