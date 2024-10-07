@@ -1,107 +1,83 @@
 <script setup>
 import { ref } from 'vue';
-import { getFirestore, collection, addDoc } from 'firebase/firestore'; // 引入 Firestore 相关库
-import db from '@/firebase/init.js'; // 导入 Firestore 实例
+import { useRouter } from 'vue-router';
+import { useChange } from '../router/change';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Firebase Auth
 
 const formData = ref({
-  username: '',
+  email: '',  
   password: '',
-  confirmPassword: '',
-  email: '',
-  role: 'user',
-});
-
-const errors = ref({
-  username: null,
-  password: null,
-  confirmPassword: null,
-  email: null,
 });
 
 const message = ref('');
+const warningMessage = ref(''); 
+const router = useRouter();
+const { login } = useChange();
+
+const sanitizeInput = (input) => {
+  const tagPattern = /<[^>]*>?/gm;
+  if (tagPattern.test(input)) {
+    warningMessage.value = "Your input contains invalid characters or scripts and has been rejected.";
+    return input.replace(tagPattern, ''); 
+  } else {
+    warningMessage.value = ''; 
+    return input;
+  }
+};
 
 const validatePassword = (blur) => {
-  const password = formData.value.password;
+  const password = sanitizeInput(formData.value.password);
   const minLength = 8;
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
 
   if (password.length < minLength) {
-    if (blur) errors.value.password = `Password must be at least ${minLength} characters long.`;
+    if (blur) message.value = `Password must be at least ${minLength} characters long.`;
   } else if (!hasUppercase) {
-    if (blur) errors.value.password = 'Password must contain at least one uppercase letter.';
+    if (blur) message.value = 'Password must contain at least one uppercase letter.';
   } else if (!hasLowercase) {
-    if (blur) errors.value.password = 'Password must contain at least one lowercase letter.';
+    if (blur) message.value = 'Password must contain at least one lowercase letter.';
   } else if (!hasSpecialChar) {
-    if (blur) errors.value.password = 'Password must contain at least one special character.';
+    if (blur) message.value = 'Password must contain at least one special character.';
   } else {
-    errors.value.password = null;
+    message.value = '';
   }
 };
 
-const validateConfirmPassword = (blur) => {
-  if (formData.value.password !== formData.value.confirmPassword) {
-    if (blur) errors.value.confirmPassword = 'Passwords do not match.';
-  } else {
-    errors.value.confirmPassword = null;
+const submitForm = () => {
+  const auth = getAuth();
+  const sanitizedEmail = sanitizeInput(formData.value.email);
+  const sanitizedPassword = sanitizeInput(formData.value.password);
+
+  if (warningMessage.value) {
+    return;
   }
-};
-
-const validateEmail = (blur) => {
-  const email = formData.value.email;
-  const minLength = 4;
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (email.length < minLength) {
-    if (blur) errors.value.email = `Email must be at least ${minLength} characters long.`;
-  } else if (!emailPattern.test(email)) {
-    if (blur) errors.value.email = 'Invalid email format. Please use a correct email format, such as example@example.com';
-  } else {
-    errors.value.email = null;
-  }
-};
-
-const submitForm = async () => {
-  // Firestore 中的 'users' 集合
-  const usersCollection = collection(db, 'users');
-
-  try {
-    // 添加用户数据到 Firestore
-    await addDoc(usersCollection, {
-      username: formData.value.username,
-      password: formData.value.password,
-      email: formData.value.email,
-      role: formData.value.role,
+  
+  // Firebase 登录验证
+  signInWithEmailAndPassword(auth, sanitizedEmail, sanitizedPassword)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      // 成功登录后，可以继续执行相应的跳转逻辑
+      login(user.role); // 使用用户角色
+      router.push({ name: 'About' });
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      message.value = `Login failed: ${errorMessage}`;
     });
+};
 
-    message.value = 'Registration successful!';
-    formData.value = { username: '', password: '', confirmPassword: '', email: '', role: 'user' };
-  } catch (e) {
-    message.value = 'Registration failed: ' + e.message;
-  }
+const goToRegisterPage = () => {
+  router.push({ name: 'Register' }); 
 };
 </script>
 
 <template>
   <div class="container mt-5">
-    <h1 class="text-center">Register</h1>
+    <h1 class="text-center">Firebase Login</h1>
     <form @submit.prevent="submitForm" class="mt-4">
- 
-      <div class="row mb-3">
-        <div class="col-md-12 col-sm-12">
-          <label for="username" class="form-label">Username</label>
-          <input
-            type="text"
-            class="form-control"
-            id="username"
-            v-model="formData.username"
-            required
-          />
-          <div v-if="errors.username" class="text-danger">{{ errors.username }}</div>
-        </div>
-      </div>
-
+      <!-- Email -->
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="email" class="form-label">Email</label>
@@ -109,15 +85,13 @@ const submitForm = async () => {
             type="email"
             class="form-control"
             id="email"
-            @blur="() => validateEmail(true)"
-            @input="() => validateEmail(true)"
             v-model="formData.email"
             required
           />
-          <div v-if="errors.email" class="text-danger">{{ errors.email }}</div>
         </div>
       </div>
 
+      <!-- Password -->
       <div class="row mb-3">
         <div class="col-md-12 col-sm-12">
           <label for="password" class="form-label">Password</label>
@@ -130,41 +104,26 @@ const submitForm = async () => {
             v-model="formData.password"
             required
           />
-          <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
+          <div v-if="message" class="text-danger">{{ message }}</div>
         </div>
       </div>
 
-      <div class="row mb-3">
-        <div class="col-md-12 col-sm-12">
-          <label for="confirm-password" class="form-label">Confirm Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="confirm-password"
-            @blur="() => validateConfirmPassword(true)"
-            @input="() => validateConfirmPassword(true)"
-            v-model="formData.confirmPassword"
-            required
-          />
-          <div v-if="errors.confirmPassword" class="text-danger">{{ errors.confirmPassword }}</div>
-        </div>
+      <div v-if="warningMessage" class="alert alert-warning">
+        {{ warningMessage }}
       </div>
 
-      <div class="row mb-3">
-        <div class="col-md-12 col-sm-12">
-          <label for="role" class="form-label">Role</label>
-          <select v-model="formData.role" class="form-select">
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-      </div>
-
+      <!-- Submit Button -->
       <div class="text-center">
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">Login</button>
       </div>
     </form>
 
+    <!-- Register Button -->
+    <div class="text-center mt-4">
+      <p>Don't have an account? <button @click="goToRegisterPage" class="btn btn-link">Firebase Register here</button></p>
+    </div>
+
+    <!-- Message -->
     <p v-if="message" class="text-center mt-4">{{ message }}</p>
   </div>
 </template>
