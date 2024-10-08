@@ -5,6 +5,7 @@ import FirebaseLoginPage from '../views/FirebaseLoginPage.vue';
 import FirebaseRegisterPage from '../views/FirebaseRegisterPage.vue';
 import { useChange } from '../router/change';  // 引入 useChange
 import AdminDashboard from '../views/AdminDashboard.vue';
+import UserManagementPage from '../views/UserManagementPage.vue';  // 请确保路径正确
 
 const { isChange, userRole } = useChange();  // 从 useChange 中获取 userRole
 
@@ -30,7 +31,12 @@ const routes = [
     component: FirebaseRegisterPage 
   },
   {
-    path: '/admin-dashboard',
+    path: '/manage-users',
+    name: 'UserManagementPage',
+    component: UserManagementPage,
+  },
+  {
+    path: '/admin',
     name: 'AdminDashboard',
     component: AdminDashboard,
     beforeEnter: (to, from, next) => {
