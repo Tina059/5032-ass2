@@ -3,7 +3,8 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChange } from '../router/change';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Firebase Auth
-
+import { getFirestore, doc, getDoc} from 'firebase/firestore';
+import db from '../firebase/init';
 const formData = ref({
   email: '',  
   password: '',
@@ -45,7 +46,7 @@ const validatePassword = (blur) => {
   }
 };
 
-const submitForm = () => {
+const submitForm = async () => {
   const auth = getAuth();
   const sanitizedEmail = sanitizeInput(formData.value.email);
   const sanitizedPassword = sanitizeInput(formData.value.password);
@@ -53,20 +54,33 @@ const submitForm = () => {
   if (warningMessage.value) {
     return;
   }
-  
-  // Firebase 登录验证
-  signInWithEmailAndPassword(auth, sanitizedEmail, sanitizedPassword)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      // 成功登录后，可以继续执行相应的跳转逻辑
-      login(user.role); // 使用用户角色
-      router.push({ name: 'About' });
-    })
-    .catch((error) => {
-      const errorMessage = error.message;
-      message.value = `Login failed: ${errorMessage}`;
-    });
+
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, sanitizedEmail, sanitizedPassword);
+    const user = userCredential.user;
+
+    const userDocRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(userDocRef);
+    
+    if (docSnap.exists()) {
+      const userData = docSnap.data();
+      login(userData.role);  // 保存用户角色
+
+      if (userData.role === 'admin') {
+        router.push({ name: 'AdminDashboard' });
+      } else if (userData.role === 'user') {
+        router.push({ name: 'About' });
+      }
+    } else {
+      message.value = 'No such user data!';
+    }
+  } catch (error) {
+    message.value = `Login failed: ${error.message}`;
+  }
 };
+
+
+
 
 const goToRegisterPage = () => {
   router.push({ name: 'Register' }); 

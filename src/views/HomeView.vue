@@ -14,6 +14,7 @@
       <img src="@/assets/home-background.jpg" alt="Background Image" class="background-img" />
     </div>
 
+  
     <div class="news-container">
       <h2>Health News</h2>
       <ul>
@@ -24,6 +25,7 @@
       </ul>
     </div>
   </div>
+
   <footer class="footer">
       <div class="contact-info">
         <h3>24 hour health advice you can count on</h3>
@@ -36,12 +38,17 @@
       </div>
       
     </footer>
+
+  <div>
+      <h1>My Application</h1>
+      <SendEmail />
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import newsData from '@/assets/news.json';
-
+import SendEmail from '../components/SendEmail.vue';
 const news = ref([]);
 
 news.value = newsData;

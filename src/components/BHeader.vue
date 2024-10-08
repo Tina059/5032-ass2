@@ -1,3 +1,4 @@
+
 <template>
 
   <div class="container">
@@ -19,6 +20,9 @@
         </li>
         <li class="nav-item">
           <button class="nav-link btn-logout" @click="logout">Logout</button>
+        </li>
+        <li class="nav-item" v-if="userRole === 'admin'">
+          <router-link to="/admin" class="nav-link" active-class="active">Admin Dashboard</router-link>
         </li>
       </ul>
     </header>
