@@ -31,6 +31,8 @@
 
 <script setup>
 import { useChange } from '@/router/change';
+import { userRole } from '@/router/change';
+
 const { isChange } = useChange();
 
 const logout = () => {

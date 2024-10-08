@@ -15,15 +15,31 @@
     </div>
 
   
-    <div class="news-container">
-      <h2>Health News</h2>
-      <ul>
-        <li v-for="(newsItem, index) in news" :key="index" class="news-item">
-          <h3>{{ newsItem.title }}</h3>
-          <p>{{ newsItem.content }}</p>
-        </li>
-      </ul>
+    <div class="news-table-container">
+      <h2>Health News Table</h2>
+      <vue-good-table
+        :columns="newsColumns"
+        :rows="news"
+        :search-options="{ enabled: true }"
+        :pagination-options="{ enabled: true, perPage: 10 }"
+      />
     </div>
+
+    <!-- 另一个表格部分：模拟用户数据 -->
+    <div class="users-table-container">
+      <h2>Doctor's duty schedule</h2>
+      <vue-good-table
+        :columns="userColumns"
+        :rows="mockUsers"
+        :search-options="{ enabled: true }"
+        :pagination-options="{ enabled: true, perPage: 10 }"
+      />
+    </div>
+
+    <div>
+      <h1>My Application</h1>
+      <SendEmail />
+  </div>
   </div>
 
   <footer class="footer">
@@ -39,21 +55,51 @@
       
     </footer>
 
-  <div>
-      <h1>My Application</h1>
-      <SendEmail />
-  </div>
+    
 </template>
 
 <script setup>
+import SendEmail from '@/components/SendEmail.vue';
 import { ref } from 'vue';
-import newsData from '@/assets/news.json';
-import SendEmail from '../components/SendEmail.vue';
-const news = ref([]);
+import { VueGoodTable } from 'vue-good-table-next'; // 确保导入的是 vue-good-table-next
+import 'vue-good-table-next/dist/vue-good-table-next.css';
 
-news.value = newsData;
+// 新闻数据
+const news = ref([
+  { title: 'Health Awareness Month', content: 'This month is dedicated to raising awareness about various health issues...' },
+  { title: 'New Health Policies Announced', content: 'The government has announced new health policies aimed at improving...' }
+]);
 
+const newsColumns = [
+  { label: 'Title', field: 'title', sortable: true },
+  { label: 'Content', field: 'content', sortable: true }
+];
+
+// 模拟用户数据
+const mockUsers = ref([
+  { id: 1, name: 'John Doe', specialty: 'Cardiology', email: 'john@example.com' },
+  { id: 2, name: 'Jane Smith', specialty: 'Dermatology', email: 'jane@example.com' },
+  { id: 3, name: 'Alice Johnson', specialty: 'Pediatrics', email: 'alice@example.com' },
+  { id: 4, name: 'Sarah Lee', specialty: 'Dermatology', email: 'Lee@example.com' },
+  { id: 5, name: 'Tian Wang', specialty: 'Neurology', email: 'tWang@example.com' },
+  { id: 6, name: 'David Martinez', specialty: 'Psychology', email: 'david6@example.com' },
+  { id: 7, name: 'Anna Gile', specialty: 'Orthopedics', email: 'anna12@example.com' },
+  { id: 8, name: 'Benjamin Scott', specialty: 'Dermatology', email: 'scott15@example.com' },
+  { id: 9, name: 'Grace Hall', specialty: 'Cardiology', email: 'hall367@example.com' },
+  { id: 10, name: 'Mia Walke', specialty: 'Psychiatry', email: 'mwalke@example.com' },
+  { id: 11, name: 'Laura Wilson', specialty: 'Pulmonology', email: 'laura@example.com' },
+  { id: 12, name: 'Michael Smith', specialty: 'Immunology', email: 'michel@example.com' },
+  { id: 13, name: 'Wendy Lu', specialty: 'Dermatology', email: 'wendy@example.com' },
+]);
+
+const userColumns = [
+  { label: 'ID', field: 'id', sortable: true },
+  { label: 'Name', field: 'name', sortable: true },
+  { label: 'Specialty', field: 'specialty', sortable: true },
+  { label: 'Email', field: 'email', sortable: true }
+];
 </script>
+
 
 <style scoped>
 .home-container {

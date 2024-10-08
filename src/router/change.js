@@ -3,6 +3,8 @@ import { ref } from 'vue';
 const isChange = ref(false);
 const userRole = ref('');
 
+export { userRole };
+
 export function useChange() {
   const login = (role) => {
     isChange.value = true;

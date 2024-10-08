@@ -14,5 +14,8 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  optimizeDeps: {
+    include: ['vue-good-table-next'], // 强制包含 `vue-good-table-next`，确保它被优化
   }
 })
