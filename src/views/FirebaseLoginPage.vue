@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router';
 import { useChange } from '../router/change';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Firebase Auth
 import { getFirestore, doc, getDoc} from 'firebase/firestore';
-import db from '../firebase/init.js';
+import db from '../fire/init.js';
 const formData = ref({
   email: '',  
   password: '',
