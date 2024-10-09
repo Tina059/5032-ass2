@@ -6,6 +6,7 @@ import FirebaseRegisterPage from '../views/FirebaseRegisterPage.vue';
 import { useChange } from '../router/change';  // 引入 useChange
 import AdminDashboard from '../views/AdminDashboard.vue';
 import UserManagementPage from '../views/UserManagementPage.vue';  // 请确保路径正确
+import MapView from '../views/MapView.vue';
 
 const { isChange, userRole } = useChange();  // 从 useChange 中获取 userRole
 
@@ -34,6 +35,11 @@ const routes = [
     path: '/manage-users',
     name: 'UserManagementPage',
     component: UserManagementPage,
+  },
+  {
+    path: '/map',
+    name: 'MapView',
+    component: MapView,
   },
   {
     path: '/admin',

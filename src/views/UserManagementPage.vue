@@ -9,6 +9,7 @@
           :search-options="{ enabled: true }"
           :pagination-options="{ enabled: true, perPage: 10 }"
         />
+        <button @click="exportToCSV">Export to CSV</button>
       </div>
     </div>
   </template>
@@ -42,6 +43,24 @@
       loading.value = false;
     }
   });
+
+  const exportToCSV = () => {
+  const headers = ['ID', 'Name', 'Email', 'Role'];
+  const rows = users.value.map(user => [user.id, user.username, user.email, user.role]);
+  let csvContent = 'data:text/csv;charset=utf-8,';
+  csvContent += headers.join(',') + '\n';
+  rows.forEach(rowArray => {
+    csvContent += rowArray.join(',') + '\n';
+  });
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement('a');
+  link.setAttribute('href', encodedUri);
+  link.setAttribute('download', 'users_data.csv');
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
   </script>
   
   <style scoped>

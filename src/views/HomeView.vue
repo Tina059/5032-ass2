@@ -1,7 +1,5 @@
 <template>
   <div class="home-container">
-    
-    
     <div class="welcome-container">
       <img src="@/assets/home-background.jpg" alt="Welcome Background" class="background-img" />
       <div class="welcome-text">
@@ -14,7 +12,6 @@
       <img src="@/assets/home-background.jpg" alt="Background Image" class="background-img" />
     </div>
 
-  
     <div class="news-table-container">
       <h2>Health News Table</h2>
       <vue-good-table
@@ -23,9 +20,10 @@
         :search-options="{ enabled: true }"
         :pagination-options="{ enabled: true, perPage: 10 }"
       />
+      <!-- 朗读按钮 -->
+      <button @click="readNews">Read News</button>
     </div>
 
-    <!-- 另一个表格部分：模拟用户数据 -->
     <div class="users-table-container">
       <h2>Doctor's duty schedule</h2>
       <vue-good-table
@@ -39,29 +37,27 @@
     <div>
       <h1>My Application</h1>
       <SendEmail />
-  </div>
+    </div>
   </div>
 
   <footer class="footer">
-      <div class="contact-info">
-        <h3>24 hour health advice you can count on</h3>
-        <p>📞 1800 000 000</p>
-      </div>
-      <div class="social-media">
-        <img src="@/assets/facebook-icon.png" alt="Facebook" class="social-icon" />
-        <img src="@/assets/twitter-icon.png" alt="Twitter" class="social-icon" />
-        <img src="@/assets/instagram-icon.png" alt="Instagram" class="social-icon" />
-      </div>
-      
-    </footer>
-
-    
+    <div class="contact-info">
+      <h3>24 hour health advice you can count on</h3>
+      <p>📞 1800 000 000</p>
+    </div>
+    <div class="social-media">
+      <img src="@/assets/facebook-icon.png" alt="Facebook" class="social-icon" />
+      <img src="@/assets/twitter-icon.png" alt="Twitter" class="social-icon" />
+      <img src="@/assets/instagram-icon.png" alt="Instagram" class="social-icon" />
+    </div>
+  </footer>
 </template>
+
 
 <script setup>
 import SendEmail from '@/components/SendEmail.vue';
 import { ref } from 'vue';
-import { VueGoodTable } from 'vue-good-table-next'; // 确保导入的是 vue-good-table-next
+import { VueGoodTable } from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 
 // 新闻数据
@@ -75,7 +71,7 @@ const newsColumns = [
   { label: 'Content', field: 'content', sortable: true }
 ];
 
-// 模拟用户数据
+
 const mockUsers = ref([
   { id: 1, name: 'John Doe', specialty: 'Cardiology', email: 'john@example.com' },
   { id: 2, name: 'Jane Smith', specialty: 'Dermatology', email: 'jane@example.com' },
@@ -98,8 +94,29 @@ const userColumns = [
   { label: 'Specialty', field: 'specialty', sortable: true },
   { label: 'Email', field: 'email', sortable: true }
 ];
-</script>
 
+// 使用 Web Speech API 朗读新闻
+const readNews = () => {
+  if (!window.speechSynthesis) {
+    alert('Your browser does not support speech synthesis.');
+    return;
+  }
+
+  // 创建一个 SpeechSynthesisUtterance 实例来朗读新闻
+  const utterance = new SpeechSynthesisUtterance();
+  let newsText = '';
+
+  news.value.forEach(item => {
+    newsText += `${item.title}: ${item.content}. `;
+  });
+
+  utterance.text = newsText;
+  utterance.lang = 'en-US'; // 设置语言
+
+  // 开始朗读
+  window.speechSynthesis.speak(utterance);
+};
+</script>
 
 <style scoped>
 .home-container {
