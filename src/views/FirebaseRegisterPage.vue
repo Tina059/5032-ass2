@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
-import db from '../firebase/init';  // 引入已初始化的 Firestore 实例
+import db from '../firebase/init.js';  
 import {  doc, setDoc } from 'firebase/firestore';
 
 const formData = ref({
