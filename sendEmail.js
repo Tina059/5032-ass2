@@ -4,11 +4,11 @@ import sgMail from '@sendgrid/mail';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-sgMail.setApiKey('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');
+sgMail.setApiKey('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');
 
 const app = express();
 app.use(cors({
-  origin: 'https://5032-ass2.pages.dev' // 允许来自这个域的请求
+  origin: 'https://5032-ass2.pages.dev' 
 }));
 
 
@@ -33,7 +33,7 @@ app.get('/send-email', async (req, res) => {
   }
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
