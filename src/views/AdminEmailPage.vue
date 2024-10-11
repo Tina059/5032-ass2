@@ -62,7 +62,7 @@
     };
   
     try {
-      const response = await axios.post(`${apiBaseURL}/admin-email`, emailPayload);
+      const response = await axios.post(`${apiBaseURL}/send-email`, emailPayload);
       responseMessage.value = 'Email sent successfully!';
     } catch (error) {
       responseMessage.value = `Error: ${error.response?.data || error.message}`;
