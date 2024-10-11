@@ -11,7 +11,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.post('/send-email', async (req, res) => {
+app.get('/send-email', async (req, res) => {
   const { to, subject, text } = req.body;
 
   const msg = {
