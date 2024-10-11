@@ -54,7 +54,7 @@
   
   const sendEmail = async () => {
     try {
-      const response = await axios.post('http://localhost:3000/send-email', emailData.value);
+      const response = await axios.post('https://5032-ass2.pages.dev/', emailData.value);
       responseMessage.value = 'Email sent successfully!';
     } catch (error) {
       responseMessage.value = `Error: ${error.response.data}`;
