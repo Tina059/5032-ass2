@@ -43,6 +43,10 @@
     });
   });
   
+  const apiBaseURL = process.env.NODE_ENV === 'production' 
+    ? 'https://5032-ass2.pages.dev' 
+    : 'http://localhost:8080';
+  
   const sendBulkEmail = async () => {
     if (selectedUsers.value.length === 0) {
       responseMessage.value = 'Please select at least one user.';
@@ -58,13 +62,14 @@
     };
   
     try {
-      const response = await axios.post('http://localhost:3000/send-email', emailPayload);
+      const response = await axios.post(`${apiBaseURL}/admin-email`, emailPayload);
       responseMessage.value = 'Email sent successfully!';
     } catch (error) {
       responseMessage.value = `Error: ${error.response?.data || error.message}`;
     }
   };
   </script>
+  
   
   <style scoped>
   .email-container {

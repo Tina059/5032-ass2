@@ -8,6 +8,7 @@ sgMail.setApiKey('SG.BeI547hGRZWDXfU8BGRDZQ.IGEUlQIrhb7Cny23A-oeJM26OS0uaB0yIotP
 
 const app = express();
 app.use(cors());
+
 app.use(bodyParser.json());
 
 app.post('/send-email', async (req, res) => {
@@ -29,6 +30,7 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
