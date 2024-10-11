@@ -5,8 +5,27 @@
       <div class="welcome-text">
         <h1>Welcome to your Health Care</h1>
         <p>Start your health exploration</p>
+        
       </div>
     </div>
+    <div class="card-links">
+      <div class="card" @click="goToMapView">
+        <img src="@/assets/hospital.png" alt="Hospital Map" class="card-image" />
+        <div class="card-content">
+          <h3>Find a Nearby Hospital</h3>
+          <p>Locate nearby hospitals quickly and easily using our map feature.</p>
+        </div>
+      </div>
+
+      <div class="card" @click="goToAboutView">
+        <img src="@/assets/activity.png" alt="Activity Info" class="card-image" />
+        <div class="card-content">
+          <h3>Healthy Activities</h3>
+          <p>Explore various healthy activities to enhance your well-being.</p>
+        </div>
+      </div>
+    </div>
+
 
     <div class="image-container">
       <img src="@/assets/home-background.jpg" alt="Background Image" class="background-img" />
@@ -59,7 +78,8 @@ import SendEmail from '@/components/SendEmail.vue';
 import { ref } from 'vue';
 import { VueGoodTable } from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 // 新闻数据
 const news = ref([
   { title: 'Health Awareness Month', content: 'This month is dedicated to raising awareness about various health issues...' },
@@ -71,7 +91,14 @@ const newsColumns = [
   { label: 'Content', field: 'content', sortable: true }
 ];
 
+const goToMapView = () => {
+  router.push({ name: 'MapView' }); 
+};
 
+
+const goToAboutView = () => {
+  router.push({ name: 'About' }); 
+};
 const mockUsers = ref([
   { id: 1, name: 'John Doe', specialty: 'Cardiology', email: 'john@example.com' },
   { id: 2, name: 'Jane Smith', specialty: 'Dermatology', email: 'jane@example.com' },
@@ -152,7 +179,57 @@ const readNews = () => {
   height: 200px;  
   border-radius: 10px; 
 }
+.image-links {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+  margin-top: 20px;
+}
 
+.card-links {
+  display: flex;
+  justify-content: center; 
+  gap: 40px; 
+  margin-top: 30px;
+  flex-wrap: wrap; 
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 200px;
+  text-align: center;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.card-content h3 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  color: #555;
+}
 
 .welcome-text {
   position: absolute;

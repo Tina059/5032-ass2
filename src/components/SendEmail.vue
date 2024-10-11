@@ -57,7 +57,7 @@
       const response = await axios.get('https://5032-ass2.pages.dev/', emailData.value);
       responseMessage.value = 'Email sent successfully!';
     } catch (error) {
-      responseMessage.value = `Error: ${error.response.data}`;
+      responseMessage.value = ` ${error.response.data}`;
     }
   };
   </script>

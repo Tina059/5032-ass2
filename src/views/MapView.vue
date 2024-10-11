@@ -40,17 +40,16 @@ onMounted(() => {
   map.value = new mapboxgl.Map({
     container: mapContainer.value,
     style: 'mapbox://styles/mapbox/streets-v11',
-    center: [144.9631, -37.8136], // 初始中心坐标
-    zoom: 9, // 初始缩放等级
+    center: [144.9631, -37.8136], 
+    zoom: 9, 
   });
 
-  map.value.addControl(new mapboxgl.NavigationControl()); // 添加导航控制
+  map.value.addControl(new mapboxgl.NavigationControl()); 
 
-  // 添加 Geocoder 到自定义的容器，并设置语言为英文
   const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
-    language: 'en', // 设置语言为英文
+    language: 'en', 
   });
   geocoderContainer.value.appendChild(geocoder.onAdd(map.value));
 });
@@ -88,35 +87,7 @@ const getDirections = () => {
   }
 };
 
-const searchNearby = () => {
-  const hospitals = [
-    { name: 'Melbourne City Hospital', coordinates: [144.9631, -37.8100] },
-    { name: 'Royal Melbourne Hospital', coordinates: [144.9568, -37.7985] },
-    { name: 'St Vincent\'s Hospital', coordinates: [144.9785, -37.8060] },
-  ];
 
-  hospitals.forEach(hospital => {
-    const el = document.createElement('div');
-    el.className = 'hospital-marker';
-
-    // 创建一个新的标记
-    new mapboxgl.Marker(el)
-      .setLngLat(hospital.coordinates)
-      .setPopup(
-        new mapboxgl.Popup({ offset: 25 }) // 添加弹窗信息
-          .setText(hospital.name)
-      )
-      .addTo(map.value);
-  });
-
-  if (hospitals.length > 0) {
-    map.value.flyTo({
-      center: hospitals[0].coordinates,
-      essential: true,
-      zoom: 13,
-    });
-  }
-};
 </script>
 
 <style scoped>
@@ -124,28 +95,63 @@ const searchNearby = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: #e4f8eb; 
   padding: 20px;
+  border-radius: 10px;
+}
+
+.navigation-container {
+  background-color: #f7f9f1; 
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 600px;
 }
 
 input {
-  margin: 5px;
-  padding: 8px;
+  margin: 10px 5px;
+  padding: 10px;
   font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: calc(50% - 20px);
+  box-sizing: border-box;
 }
 
 button {
-  background-color: rgb(148, 197, 174);
-  margin: 5px;
-  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.geocoder-container {
+  margin: 10px 0;
+  width: 100%;
+  max-width: 600px;
+  border: 2px solid #007bff; 
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .map-container {
   width: 100%;
+  max-width: 800px; 
   height: 500px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: 2px solid #007bff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .hospital-marker {
@@ -154,14 +160,5 @@ button {
   height: 20px;
   border-radius: 50%;
   cursor: pointer;
-}
-
-.geocoder-container {
-  margin: 10px 0;
-  width: 100%;
-  max-width: 400px;
-  border: 2px solid #007bff; /* 给搜索框加边框 */
-  padding: 8px;
-  border-radius: 8px;
 }
 </style>
