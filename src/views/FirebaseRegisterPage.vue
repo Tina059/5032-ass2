@@ -78,6 +78,7 @@ const submitForm = async () => {
       username: formData.value.username,
       email: formData.value.email,
       role: formData.value.role, // 保存角色 (user/admin)
+      createdAt: new Date(),
     });
 
     message.value = 'Registration successful!';

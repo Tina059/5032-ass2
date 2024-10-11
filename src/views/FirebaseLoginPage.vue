@@ -1,13 +1,14 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useChange } from '../router/change';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth"; // Firebase Auth
 import { getFirestore, doc, getDoc} from 'firebase/firestore';
 import db from '../fire/init.js';
+
 const formData = ref({
-  email: '',  
-  password: '',
+  email: localStorage.getItem('loginEmail') || '',  
+  password: localStorage.getItem('loginPassword') || '',
 });
 
 const message = ref('');
@@ -79,8 +80,14 @@ const submitForm = async () => {
   }
 };
 
+// 保存表单数据到 Local Storage
+watch(() => formData.value.email, (newEmail) => {
+  localStorage.setItem('loginEmail', newEmail);
+});
 
-
+watch(() => formData.value.password, (newPassword) => {
+  localStorage.setItem('loginPassword', newPassword);
+});
 
 const goToRegisterPage = () => {
   router.push({ name: 'Register' }); 
