@@ -26,7 +26,7 @@
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { collection, getDocs } from 'firebase/firestore';
-import db from '../firebase/init.js';
+import db from '../fire/init.js';
 import Chart from 'chart.js/auto';
 
 const router = useRouter();
