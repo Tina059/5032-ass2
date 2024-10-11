@@ -7,7 +7,10 @@ import cors from 'cors';
 sgMail.setApiKey('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');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: 'https://5032-ass2.pages.dev' // 允许来自这个域的请求
+}));
+
 
 app.use(bodyParser.json());
 
