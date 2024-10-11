@@ -44,7 +44,7 @@
     </div>
 
     <div class="users-table-container">
-      <h2>Doctor's duty schedule</h2>
+      <h2>Doctor's Liste</h2>
       <vue-good-table
         :columns="userColumns"
         :rows="mockUsers"
