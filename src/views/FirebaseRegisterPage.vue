@@ -64,20 +64,20 @@ const validateEmail = (blur) => {
   }
 };
 
-// Firestore 和 Firebase 注册功能
+
 const submitForm = async () => {
   const auth = getAuth();
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, formData.value.email, formData.value.password);
     const user = userCredential.user;
 
-    // 将用户数据存储到 Firestore 中，包括用户名、电子邮件、角色和 UID
+    
     const userDocRef = doc(db, "users", user.uid);
     await setDoc(userDocRef, {
-      uid: user.uid,  // 将 UID 作为文档的一部分保存
+      uid: user.uid,  
       username: formData.value.username,
       email: formData.value.email,
-      role: formData.value.role, // 保存角色 (user/admin)
+      role: formData.value.role, 
       createdAt: new Date(),
     });
 

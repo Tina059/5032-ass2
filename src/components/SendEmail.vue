@@ -43,7 +43,7 @@
   
     reader.onloadend = () => {
       emailData.value.attachment = {
-        content: btoa(reader.result), // 将文件转换为base64
+        content: btoa(reader.result), 
         filename: file.name,
         type: file.type
       };

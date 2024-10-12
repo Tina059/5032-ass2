@@ -17,13 +17,13 @@
   <script setup>
   import { ref, onMounted } from 'vue';
   import axios from 'axios';
-  import { VueGoodTable } from 'vue-good-table-next'; // Ensure this is imported
+  import { VueGoodTable } from 'vue-good-table-next'; 
   import 'vue-good-table-next/dist/vue-good-table-next.css';
   
   const users = ref([]);
   const loading = ref(true);
   
-  // Define the table columns
+  
   const userColumns = [
     { label: 'ID', field: 'id', sortable: true },
     { label: 'Name', field: 'username', sortable: true },
@@ -32,7 +32,7 @@
     { label: 'Actions', field: 'actions' }
   ];
 
-  // Load the users data from Firebase Cloud Function
+  
   onMounted(async () => {
     try {
       const response = await axios.get('https://manageusers-geiziwgfdq-uc.a.run.app');

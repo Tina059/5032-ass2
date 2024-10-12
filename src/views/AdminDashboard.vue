@@ -2,7 +2,6 @@
   <div class="admin-dashboard">
     <h1>Admin Dashboard</h1>
 
-    <!-- 管理员功能块 -->
     <div class="admin-functions">
       <h2>Email Users</h2>
       <p>Send an email to any registered user.</p>

@@ -65,7 +65,7 @@ const submitForm = async () => {
     
     if (docSnap.exists()) {
       const userData = docSnap.data();
-      login(userData.role);  // 保存用户角色
+      login(userData.role);  
 
       if (userData.role === 'admin') {
         router.push({ name: 'AdminDashboard' });
@@ -80,7 +80,7 @@ const submitForm = async () => {
   }
 };
 
-// 保存表单数据到 Local Storage
+
 watch(() => formData.value.email, (newEmail) => {
   localStorage.setItem('loginEmail', newEmail);
 });

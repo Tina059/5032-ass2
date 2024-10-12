@@ -80,7 +80,7 @@ import { VueGoodTable } from 'vue-good-table-next';
 import 'vue-good-table-next/dist/vue-good-table-next.css';
 import { useRouter } from 'vue-router';
 const router = useRouter();
-// 新闻数据
+
 const news = ref([
   { title: 'Health Awareness Month', content: 'This month is dedicated to raising awareness about various health issues...' },
   { title: 'New Health Policies Announced', content: 'The government has announced new health policies aimed at improving...' }
@@ -122,14 +122,14 @@ const userColumns = [
   { label: 'Email', field: 'email', sortable: true }
 ];
 
-// 使用 Web Speech API 朗读新闻
+
 const readNews = () => {
   if (!window.speechSynthesis) {
     alert('Your browser does not support speech synthesis.');
     return;
   }
 
-  // 创建一个 SpeechSynthesisUtterance 实例来朗读新闻
+  
   const utterance = new SpeechSynthesisUtterance();
   let newsText = '';
 
@@ -138,9 +138,9 @@ const readNews = () => {
   });
 
   utterance.text = newsText;
-  utterance.lang = 'en-US'; // 设置语言
+  utterance.lang = 'en-US'; 
 
-  // 开始朗读
+  
   window.speechSynthesis.speak(utterance);
 };
 </script>

@@ -11,7 +11,7 @@
       <!--<input v-model="searchQuery" type="text" placeholder="Search nearby (e.g., hospital)" />-->
       <p>Search for the location of nearby hospitals and clinics.</p>
     </div>
-    <div ref="geocoderContainer" class="geocoder-container"></div> <!-- 自定义的搜索框容器 -->
+    <div ref="geocoderContainer" class="geocoder-container"></div> 
     <div ref="mapContainer" class="map-container"></div>
   </div>
 </template>
@@ -22,15 +22,15 @@ import mapboxgl from 'mapbox-gl';
 import MapboxGeocoder from '@mapbox/mapbox-gl-geocoder';
 import MapboxDirections from '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions';
 
-import 'mapbox-gl/dist/mapbox-gl.css'; // 引入 Mapbox GL JS 的 CSS
-import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'; // 引入 Mapbox Geocoder 的 CSS
-import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'; // 引入 Mapbox Directions 的 CSS
+import 'mapbox-gl/dist/mapbox-gl.css'; 
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css'; 
+import '@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css'; 
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibGlsaTAwNTkiLCJhIjoiY20yMTR0NGgyMDNkejJsb2MzN3gwdjZhMyJ9.vaERWJWSlLjWHa9qrloQ2g'; // 替换为你的 Mapbox 访问令牌
 
 const map = ref(null);
 const mapContainer = ref(null);
-const geocoderContainer = ref(null); // 引用新的搜索框容器
+const geocoderContainer = ref(null); 
 const startLocation = ref("");
 const endLocation = ref("");
 const searchQuery = ref("");
