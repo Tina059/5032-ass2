@@ -1,0 +1,40 @@
+name: Deploy to GitHub Pages
+
+# 当推送到 main 分支时触发部署
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # 使用最新的 Ubuntu 环境
+
+    steps:
+    # 检出仓库代码
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # 设置 Node.js 版本
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    # 安装依赖
+    - name: Install dependencies
+      run: npm ci
+
+    # 构建项目
+    - name: Build
+      run: npm run build
+
+    # 部署到 GitHub Pages
+    - name: Deploy
+      uses: JamesIves/github-pages-deploy-action@4.1.4
+      with:
+        branch: gh-pages  # 指定发布到 gh-pages 分支
+        folder: dist       # 发布的文件夹通常是 dist
+
+permissions:
+  contents: write  # 赋予写入权限以推送到 gh-pages 分支

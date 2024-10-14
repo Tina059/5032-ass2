@@ -32,12 +32,12 @@ const router = useRouter();
 
 
 const goToEmailPage = () => {
-  router.push({ name: 'AdminEmailPage' }); // 假设有一个 AdminEmailPage.vue
+  router.push({ name: 'AdminEmailPage' }); 
 };
 
 
 const goToUserManagement = () => {
-  router.push({ name: 'UserManagementPage' }); // 假设有一个 UserManagementPage.vue
+  router.push({ name: 'UserManagementPage' }); 
 };
 
 

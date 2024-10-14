@@ -39,7 +39,7 @@
         :search-options="{ enabled: true }"
         :pagination-options="{ enabled: true, perPage: 10 }"
       />
-      <!-- 朗读按钮 -->
+  
       <button @click="readNews">Read News</button>
     </div>
 

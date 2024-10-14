@@ -3,12 +3,12 @@ import HomeView from '../views/HomeView.vue';
 import AboutView from '../views/AboutView.vue';
 import FirebaseLoginPage from '../views/FirebaseLoginPage.vue';
 import FirebaseRegisterPage from '../views/FirebaseRegisterPage.vue';
-import { useChange } from '../router/change';  // 引入 useChange
+import { useChange } from '../router/change';  
 import AdminDashboard from '../views/AdminDashboard.vue';
-import UserManagementPage from '../views/UserManagementPage.vue';  // 请确保路径正确
+import UserManagementPage from '../views/UserManagementPage.vue';  
 import MapView from '../views/MapView.vue';
 
-const { isChange, userRole } = useChange();  // 从 useChange 中获取 userRole
+const { isChange, userRole } = useChange();  
 
 const routes = [
   {
@@ -47,7 +47,7 @@ const routes = [
     component: AdminDashboard,
     beforeEnter: (to, from, next) => {
       if (userRole.value === 'admin') {
-        next(); // 允许进入
+        next(); 
       } else {
         alert('You do not have permission to access this page.');
         next({ name: 'Home' });
@@ -70,11 +70,11 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(process.env.BASE_URL),
   routes
-});
+})
 
-// 全局路由守卫，检查是否已登录
+
 router.beforeEach((to, from, next) => {
   if (to.name === 'About' && !isChange.value) {
     alert("Please login first");

@@ -16,6 +16,7 @@ export default defineConfig({
     }
   },
   optimizeDeps: {
-    include: ['vue-good-table-next'], // 强制包含 `vue-good-table-next`，确保它被优化
+    include: ['vue-good-table-next'], 
   }
 })
+
